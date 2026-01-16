@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -16,13 +17,22 @@ app.get('/api/kanji/:character', async (req, res) => {
     
     try {
         console.log(`Buscando kanji: ${kanji}`)
-        // `https://api.tatoeba.org/unstable/sentences?lang=jpn&q=${encodeURIComponent(kanji)}&word_count=8-20&sort=relevance&limit=20&showtrans%3Alang=eng`
-        const result = await jisho.searchForKanji(kanji)
+        const apiKey = process.env.KANJIALIVE_API_KEY;
+        const jishoResponse = await jisho.searchForKanji(kanji)
         const tatoebaResponse = await fetch(`https://api.tatoeba.org/unstable/sentences?lang=jpn&q=${encodeURIComponent(kanji)}&word_count=8-20&sort=relevance&limit=20&showtrans%3Alang=eng`);
-        
         const tatoebaData = await tatoebaResponse.json();
 
+        const kanjiAliveResponse = await fetch(`https://kanjialive-api.p.rapidapi.com/api/public/kanji/${encodeURIComponent(kanji)}`, {
+            method: 'GET',
+            headers: {
+                'x-rapidapi-key': apiKey,
+                'x-rapidapi-host': 'kanjialive-api.p.rapidapi.com'
+            }
+        })
+        const kanjiAliveData = await kanjiAliveResponse.json()
+        const result = jishoResponse
         result['exampleSentences'] = tatoebaData.data;
+        result['wordsExamples'] = kanjiAliveData
 
         res.json(result);
     } catch (error) {
