@@ -15,11 +15,15 @@ app.get('/api/kanji/:character', async (req, res) => {
     const kanji = req.params.character;
     
     try {
-        console.log(`Buscando kanji: ${kanji}`);
-        const result = await jisho.searchForKanji(kanji);
-        const result2 = await jisho.searchForExamples(kanji)
-        result['examples'] = result2.results
+        console.log(`Buscando kanji: ${kanji}`)
+        // `https://api.tatoeba.org/unstable/sentences?lang=jpn&q=${encodeURIComponent(kanji)}&word_count=8-20&sort=relevance&limit=20&showtrans%3Alang=eng`
+        const result = await jisho.searchForKanji(kanji)
+        const tatoebaResponse = await fetch(`https://api.tatoeba.org/unstable/sentences?lang=jpn&q=${encodeURIComponent(kanji)}&word_count=8-20&sort=relevance&limit=20&showtrans%3Alang=eng`);
         
+        const tatoebaData = await tatoebaResponse.json();
+
+        result['exampleSentences'] = tatoebaData.data;
+
         res.json(result);
     } catch (error) {
         console.error(error);
