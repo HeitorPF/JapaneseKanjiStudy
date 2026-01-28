@@ -55,7 +55,7 @@ app.get('/api/kanji/:category/:level', async (req, res) => {
     }
 
     const caminhoArquivo = path.join(__dirname, 'src/data', nameArq);
-    console.log('camim', caminhoArquivo)
+    console.log('path', caminhoArquivo)
     try {
         const dados = fs.readFileSync(caminhoArquivo, 'utf8');
         const json = JSON.parse(dados);
