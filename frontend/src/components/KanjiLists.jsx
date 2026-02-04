@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { useState } from 'react'
 import './KanjiLists.css'
 
@@ -9,12 +10,10 @@ export function KanjiLists({searchKanji}) {
   }
 
   function getListKanjis(category, level){
-    fetch(`http://localhost:3001/api/kanji/${category}/${level}`)
-      .then(response => response.json())
-      .then(result => {
-        setListKanjis(result)
+    axios.get(`http://localhost:3001/api/kanji/${category}/${level}`)
+      .then((response) => {
+        setListKanjis(response.data)
       })
-      .catch(err => console.log('Erro:', err))
   }
 
   return(

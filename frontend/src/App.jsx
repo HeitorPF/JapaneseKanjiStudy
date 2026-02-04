@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { useState } from 'react'
 import { KanjiInput } from './components/KanjiInput'
 import { KanjiInfo } from './components/KanjiInfo'
@@ -13,15 +14,10 @@ function App() {
   function searchKanji(kanjiInput) {
     setIsLoading(true)
     setKanjiInput(kanjiInput)
-    fetch(`http://localhost:3001/api/kanji/${kanjiInput}`)
-      .then(response => response.json())
-      .then(result => {
-        console.log("Dados recebidos do backend:", result);
-        setData(result);
-        setIsLoading(false)
-        setKanjiInput('')
+    axios.get(`http://localhost:3001/api/kanji/${kanjiInput}`)
+      .then((response) => {
+        setData(response.data)
       })
-      .catch(err => console.error("Erro:", err));
 
   }
 
