@@ -17,6 +17,8 @@ function App() {
     axios.get(`http://localhost:3001/api/kanji/${kanjiInput}`)
       .then((response) => {
         setData(response.data)
+        console.log(data)
+        setIsLoading(false)
       })
 
   }
