@@ -11,8 +11,8 @@ export function KanjiPhrases({ phrases }) {
             phrases.data.map((phrase) => {
               return (
                 <li key={phrase.id}>
-                  <p>{phrase.transcriptions[0].text}</p>
-                  <p>{phrase.translations[0].text}</p>
+                  <p>{phrase.transcriptions[0]?.text}</p>
+                  <p>{phrase.translations[0]?.text}</p>
                 </li>
               )
             })
