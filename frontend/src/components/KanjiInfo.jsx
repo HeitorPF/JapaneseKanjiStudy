@@ -1,38 +1,27 @@
-export function KanjiInfo({data}) {
+import './KanjiInfo.css'
 
-  return(
+export function KanjiInfo({ info }) {
+  console.log(info)
+
+  return (
     <>
-      {data?(
+      {info ? (
         <div>
-          <p>Kanji: {data.query}</p>
-          <img src={data.strokeOrderGifUri} alt="Stroke order" />
-          <p>Stroke order GIF: {data.strokeOrderGifUri}</p>
-          <p>Significado: {data.meaning}</p>
-          <p>Taught in: {data.taughtIn}</p>
-          <p>JLPT level: {data.jlptLevel}</p>
-          <p>Meaning: {data.meaning}</p>
-          <p>Kunyomi: {data.kunyomi.join('、 ')}</p>
-          <p>Onyomi: {data.onyomi.join('、 ')}</p>
-          <p>Radical: {data.radical.symbol} {data.radical.forms ? `(${data.radical.forms})` : ''} - {data.radical.meaning}</p>
-          <p>Stroke order diagram: {data.strokeOrderDiagramUri}</p>
-          <p>Stroke order SVG: {data.strokeOrderSvgUri}</p>
-          <p>Jisho Uri: {data.uri}</p>
-          <ul>
-            {data.exampleSentences.map((example, index) => {
-              if(example.translations[0]){
-                return(
-                  <li key={index}>
-                    {example.text} - {example.translations[0].text}
-                  </li>
-                )
-              }
-            })}
-          </ul>
+          <p>Kanji: {info.data.query}</p>
+          <img src={info.data.strokeOrderGifUri} alt="Stroke order" />
+          <p>Stroke order GIF: {info.data.strokeOrderGifUri}</p>
+          <p>Taught in: {info.data.taughtIn}</p>
+          <p>JLPT level: {info.data.jlptLevel}</p>
+          <p>Meaning: {info.data.meaning}</p>
+          <p>Kunyomi: {info.data.kunyomi.join('、 ')}</p>
+          <p>Onyomi: {info.data.onyomi.join('、 ')}</p>
+          <p>Radical: {info.data.radical.symbol} {info.data.radical.forms ? `(${info.data.radical.forms})` : ''} - {info.data.radical.meaning}</p>
+          <p>Jisho Uri: {info.data.uri}</p>
         </div>
-      ):
-      <></>
+      ) :
+        <></>
       }
-      
+
     </>
   )
 }

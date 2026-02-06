@@ -2,51 +2,100 @@ import axios from 'axios'
 import { useState } from 'react'
 import { KanjiInput } from './components/KanjiInput'
 import { KanjiInfo } from './components/KanjiInfo'
+import { KanjiVocab } from './components/KanjiVocab'
 import { KanjiLists } from './components/KanjiLists'
 import { LoadingSpinner } from './components/LoadingSpinner'
+import { KanjiPhrases } from './components/KanjiPhrases'
 import './App.css'
 
 function App() {
-  const [data, setData] = useState(null)
+  const [kanjiInfo, setKanjiInfo] = useState(null)
+  const [kanjiVocab, setKanjiVocab] = useState(null)
+  const [kanjiPhrases, setKanjiPhrases] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [kanjiInput, setKanjiInput] = useState('')
 
-  function searchKanji(kanjiInput) {
-    setIsLoading(true)
-    setKanjiInput(kanjiInput)
-    axios.get(`http://localhost:3001/api/kanji/${kanjiInput}`)
-      .then((response) => {
-        setData(response.data)
-        console.log(data)
-        setIsLoading(false)
-      })
+  function searchKanjiInfo(kanjiInput) {
+    if (kanjiInput !== kanjiInfo?.query) {
+      setIsLoading(true)
+      setKanjiInput(kanjiInput)
+      axios.get(`http://localhost:3001/api/kanji/${kanjiInput}/info`)
+        .then((response) => {
+          setKanjiInfo({
+            data: response.data,
+            query: kanjiInput
+          })
+          setIsLoading(false)
+        })
+    }
 
+  }
+
+  function searchKanjiVocab(kanjiInput) {
+    if (kanjiInput !== kanjiVocab?.query) {
+      setIsLoading(true)
+      setKanjiInput(kanjiInput)
+      axios.get(`http://localhost:3001/api/kanji/${kanjiInput}/vocab`)
+        .then((response) => {
+          setKanjiVocab({
+            data: response.data,
+            query: kanjiInput
+          })
+          setIsLoading(false)
+        })
+    }
+
+  }
+
+  function searchKanjiPhrases(kanjiInput) {
+    if (kanjiInput !== kanjiPhrases?.query) {
+      setIsLoading(true)
+      setKanjiInput(kanjiInput)
+      axios.get(`http://localhost:3001/api/kanji/${kanjiInput}/phrases`)
+        .then((response) => {
+          setKanjiPhrases({
+            data: response.data,
+            query: kanjiInput
+          })
+          setIsLoading(false)
+        })
+    }
   }
 
   return (
     <>
       <div>
-        <KanjiLists 
-          searchKanji={searchKanji}
+        <KanjiLists
+          searchKanjiInfo={searchKanjiInfo}
         />
 
         <h1>Kanji dic</h1>
         <KanjiInput
           kanjiInput={kanjiInput}
           setKanjiInput={setKanjiInput}
-          searchKanji={searchKanji}
-        />   
+          searchKanjiInfo={searchKanjiInfo}
+          searchKanjiVocab={searchKanjiVocab}
+          searchKanjiPhrases={searchKanjiPhrases}
+        />
         {
-          isLoading ? 
-          (
-            <LoadingSpinner
-              kanjiInput={kanjiInput}
-            />
-          ) : (
-            <KanjiInfo 
-              data={data} 
-            />
-          )
+          isLoading ?
+            (
+              <LoadingSpinner
+                kanjiInput={kanjiInput}
+              />
+            ) : (
+              <>
+                <KanjiInfo
+                  info={kanjiInfo}
+                />
+                <KanjiVocab
+                  vocab={kanjiVocab}
+                />
+                <KanjiPhrases
+                  phrases={kanjiPhrases}
+                />
+              </>
+            )
         }
       </div>
     </>

@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useState } from 'react'
 import './KanjiLists.css'
 
-export function KanjiLists({searchKanji}) {
+export function KanjiLists({searchKanjiInfo}) {
   const [listKanjis, setListKanjis] = useState(null)
 
   function clearList() {
@@ -30,7 +30,7 @@ export function KanjiLists({searchKanji}) {
         {listKanjis ? (
           listKanjis.map((kanji, index) => {
             return (
-              <div key={index} className='kanji' onClick={() => {searchKanji(kanji)}}>{kanji}</div>
+              <div key={index} className='kanji' onClick={() => {searchKanjiInfo(kanji)}}>{kanji}</div>
             )
           })
           ) : (

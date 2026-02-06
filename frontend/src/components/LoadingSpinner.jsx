@@ -1,3 +1,5 @@
+import './LoadingSpinner.css'
+
 export function LoadingSpinner({kanjiInput}) {
   return (
     <div style={{padding: '20px', fontWeight: 'bold'}}>

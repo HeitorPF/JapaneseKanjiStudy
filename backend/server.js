@@ -12,16 +12,12 @@ app.use(cors());
 
 const jisho = new JishoAPI();
 
-app.get('/api/kanji/:character', async (req, res) => {
+app.get('/api/kanji/:character/vocab', async (req, res) => { //KanjiAliveAPI
     const kanji = req.params.character;
     
     try {
-        console.log(`Buscando kanji: ${kanji}`)
+        console.log(`Buscando vocabulário para kanji: ${kanji}`)
         const apiKey = process.env.KANJIALIVE_API_KEY;
-        const jishoResponse = await jisho.searchForKanji(kanji)
-        const tatoebaResponse = await fetch(`https://api.tatoeba.org/unstable/sentences?lang=jpn&q=${encodeURIComponent(kanji)}&word_count=8-20&sort=relevance&limit=20&showtrans%3Alang=eng`);
-        const tatoebaData = await tatoebaResponse.json();
-
         const kanjiAliveResponse = await fetch(`https://kanjialive-api.p.rapidapi.com/api/public/kanji/${encodeURIComponent(kanji)}`, {
             method: 'GET',
             headers: {
@@ -29,12 +25,37 @@ app.get('/api/kanji/:character', async (req, res) => {
                 'x-rapidapi-host': 'kanjialive-api.p.rapidapi.com'
             }
         })
-        const kanjiAliveData = await kanjiAliveResponse.json()
-        const result = jishoResponse
-        result['exampleSentences'] = tatoebaData.data;
-        result['wordsExamples'] = kanjiAliveData
+        const result = await kanjiAliveResponse.json()
+        res.json(result.examples);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao buscar dados' });
+    }
+});
+
+app.get('/api/kanji/:character/info', async (req, res) => {
+    const kanji = req.params.character;
+    
+    try {
+        console.log(`Buscando informações para kanji: ${kanji}`)
+        const result = await jisho.searchForKanji(kanji)
 
         res.json(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao buscar dados' });
+    }
+});
+
+app.get('/api/kanji/:character/phrases', async (req, res) => {
+    const kanji = req.params.character;
+    
+    try {
+        console.log(`Buscando frases exemplo para kanji: ${kanji}`)
+        const tatoebaResponse = await fetch(`https://api.tatoeba.org/unstable/sentences?lang=jpn&q=${encodeURIComponent(kanji)}&word_count=8-20&sort=relevance&limit=20&showtrans%3Alang=eng`);
+        const result = await tatoebaResponse.json();
+
+        res.json(result.data);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Erro ao buscar dados' });
