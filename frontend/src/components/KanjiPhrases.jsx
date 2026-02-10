@@ -1,7 +1,6 @@
 import './KanjiPhrases.css'
 
 export function KanjiPhrases({ phrases }) {
-  console.log(phrases)
 
   return (
     <div>

@@ -1,7 +1,6 @@
 import './KanjiVocab.css'
 
 export function KanjiVocab({ vocab }) {
-  console.log(vocab)
 
   return (
     <div>

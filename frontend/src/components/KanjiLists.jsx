@@ -2,21 +2,19 @@ import axios from 'axios'
 import { useState } from 'react'
 import './KanjiLists.css'
 
-export function KanjiLists({searchKanjiInfo}) {
+export function KanjiLists({ searchKanjiInfo }) {
   const [listKanjis, setListKanjis] = useState(null)
 
   function clearList() {
     setListKanjis(null)
   }
 
-  function getListKanjis(category, level){
-    axios.get(`http://localhost:3001/api/kanji/${category}/${level}`)
-      .then((response) => {
-        setListKanjis(response.data)
-      })
+  async function getListKanjis(category, level) {
+    const response = await axios.get(`http://localhost:3001/api/kanji/${category}/${level}`)
+    setListKanjis(response.data)
   }
 
-  return(
+  return (
     <>
       <button onClick={() => getListKanjis('grade', '1')}>grade 1</button>
       <button onClick={() => getListKanjis('grade', '2')}>grade 2</button>
@@ -30,13 +28,13 @@ export function KanjiLists({searchKanjiInfo}) {
         {listKanjis ? (
           listKanjis.map((kanji, index) => {
             return (
-              <div key={index} className='kanji' onClick={() => {searchKanjiInfo(kanji)}}>{kanji}</div>
+              <div key={index} className='kanji' onClick={() => { searchKanjiInfo(kanji) }}>{kanji}</div>
             )
           })
-          ) : (
-            <>
-            </>
-          )
+        ) : (
+          <>
+          </>
+        )
         }
       </div>
     </>

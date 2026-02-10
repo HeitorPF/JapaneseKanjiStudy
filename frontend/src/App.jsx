@@ -15,50 +15,44 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [kanjiInput, setKanjiInput] = useState('')
 
-  function searchKanjiInfo(kanjiInput) {
+  async function searchKanjiInfo(kanjiInput) {
     if (kanjiInput !== kanjiInfo?.query) {
       setIsLoading(true)
       setKanjiInput(kanjiInput)
-      axios.get(`http://localhost:3001/api/kanji/${kanjiInput}/info`)
-        .then((response) => {
-          setKanjiInfo({
-            data: response.data,
-            query: kanjiInput
-          })
-          setIsLoading(false)
-        })
+      const response = await axios.get(`http://localhost:3001/api/kanji/${kanjiInput}/info`)
+      setKanjiInfo({
+        data: response.data,
+        query: kanjiInput
+      })
+      setIsLoading(false)
     }
 
   }
 
-  function searchKanjiVocab(kanjiInput) {
+  async function searchKanjiVocab(kanjiInput) {
     if (kanjiInput !== kanjiVocab?.query) {
       setIsLoading(true)
       setKanjiInput(kanjiInput)
-      axios.get(`http://localhost:3001/api/kanji/${kanjiInput}/vocab`)
-        .then((response) => {
-          setKanjiVocab({
-            data: response.data,
-            query: kanjiInput
-          })
-          setIsLoading(false)
-        })
+      const response = await axios.get(`http://localhost:3001/api/kanji/${kanjiInput}/vocab`)
+      setKanjiVocab({
+        data: response.data,
+        query: kanjiInput
+      })
+      setIsLoading(false)
     }
 
   }
 
-  function searchKanjiPhrases(kanjiInput) {
+  async function searchKanjiPhrases(kanjiInput) {
     if (kanjiInput !== kanjiPhrases?.query) {
       setIsLoading(true)
       setKanjiInput(kanjiInput)
-      axios.get(`http://localhost:3001/api/kanji/${kanjiInput}/phrases`)
-        .then((response) => {
-          setKanjiPhrases({
-            data: response.data,
-            query: kanjiInput
-          })
-          setIsLoading(false)
-        })
+      const response = await axios.get(`http://localhost:3001/api/kanji/${kanjiInput}/phrases`)
+      setKanjiPhrases({
+        data: response.data,
+        query: kanjiInput
+      })
+      setIsLoading(false)
     }
   }
 

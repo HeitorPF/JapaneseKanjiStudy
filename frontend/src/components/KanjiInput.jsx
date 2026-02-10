@@ -8,9 +8,9 @@ export function KanjiInput({ searchKanjiInfo, searchKanjiVocab, searchKanjiPhras
 
   return (
     <>
-      <button onClick={() => { searchKanjiInfo(kanjiInput) }}>Procurar info</button>
-      <button onClick={() => { searchKanjiVocab(kanjiInput) }}>Procurar Vocab</button>
-      <button onClick={() => { searchKanjiPhrases(kanjiInput) }}>Procurar Phrases</button>
+      <button className='search-buttons' onClick={() => { searchKanjiInfo(kanjiInput) }}>Procurar info</button>
+      <button className='search-buttons' onClick={() => { searchKanjiVocab(kanjiInput) }}>Procurar Vocab</button>
+      <button className='search-buttons' onClick={() => { searchKanjiPhrases(kanjiInput) }}>Procurar Phrases</button>
       <input className="kanjiInput"onChange={saveKanjiInput} value={kanjiInput} />
     </>
   )

@@ -1,7 +1,6 @@
 import './KanjiInfo.css'
 
 export function KanjiInfo({ info }) {
-  console.log(info)
 
   return (
     <>
