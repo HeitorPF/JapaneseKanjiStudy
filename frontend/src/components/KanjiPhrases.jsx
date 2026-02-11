@@ -3,19 +3,32 @@ import './KanjiPhrases.css'
 
 export function KanjiPhrases({ phrases, copytoClipboard }) {
 
-  const convertToAnkiFormat = (textString) => {
+  function convertToHTML(textString){
+    return textString.replace(/\[(.*?)\]/g, (match, content) => {
+      // content será algo como "一緒|いっ|しょ"
+      const parts = content.split('|');
+
+      const kanji = parts[0]; // "一緒"
+      const reading = parts.slice(1).join(''); // "いっしょ" (junta todas as leituras)
+
+      // Retorna com o espaço na frente, exigido pelo Anki
+      return `<ruby>${kanji}<rt>${reading}</rt></ruby>`;
+    }).trim().replace(/\s+/g, ' ');
+  }
+
+  function convertToAnkiFormat(textString){
     if (!textString) return "";
 
     return textString.replace(/\[(.*?)\]/g, (match, content) => {
-    // content será algo como "一緒|いっ|しょ"
-    const parts = content.split('|');
-    
-    const kanji = parts[0]; // "一緒"
-    const reading = parts.slice(1).join(''); // "いっしょ" (junta todas as leituras)
+      // content será algo como "一緒|いっ|しょ"
+      const parts = content.split('|');
 
-    // Retorna com o espaço na frente, exigido pelo Anki
-    return ` ${kanji}[${reading}]`;
-  }).trim().replace(/\s+/g, ' ');
+      const kanji = parts[0]; // "一緒"
+      const reading = parts.slice(1).join(''); // "いっしょ" (junta todas as leituras)
+
+      // Retorna com o espaço na frente, exigido pelo Anki
+      return ` ${kanji}[${reading}]`;
+    }).trim().replace(/\s+/g, ' ');
   };
 
   if (phrases) {
@@ -33,7 +46,7 @@ export function KanjiPhrases({ phrases, copytoClipboard }) {
                 <tr className='kanji-phrases-table-row' key={phrase.id}>
                   <td className='transcriptions' onClick={() => {
                     copytoClipboard(convertToAnkiFormat(phrase.transcriptions[0].text))
-                  }} dangerouslySetInnerHTML={{ __html: phrase.transcriptions[0].html }} />
+                  }} dangerouslySetInnerHTML={{ __html: convertToHTML(phrase.transcriptions[0].text) }} />
                   {/* <div className='grid-row transcriptions'>{phrase.transcriptions[0].text}</div> */}
                   <td>{phrase.translations[0].text}</td>
                 </tr>

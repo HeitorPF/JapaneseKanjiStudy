@@ -33,6 +33,10 @@
 
 .transcriptions{
   cursor: pointer;
+  font-family: "Noto Sans JP", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
 td{
@@ -40,6 +44,20 @@ td{
   font-size: 1.3rem;
 }
 
-rt{
-  font-size: .65rem;
+ruby {
+  font-family: "Noto Sans JP", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  ruby-align: center;
+}
+
+rt {
+  font-family: "Noto Sans JP", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 0.75rem;
+  color: hsl(0, 0%, 70%);
+  user-select: none;
 }

@@ -26,7 +26,6 @@ function App() {
         data: response.data,
         query: kanji
       })
-      setIsLoading(false)
     }
 
   }
@@ -38,7 +37,6 @@ function App() {
         data: response.data,
         query: kanji
       })
-      setIsLoading(false)
     }
 
   }
@@ -50,7 +48,6 @@ function App() {
         data: response.data,
         query: kanji
       })
-      setIsLoading(false)
     }
   }
 
