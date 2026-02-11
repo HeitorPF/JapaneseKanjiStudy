@@ -1,43 +1,45 @@
 .kanji-phrases {
-  max-width: 80vw;
-  min-width: 40rem;
-  margin: auto;
+  display: flex;
+  justify-content: center;
   margin-bottom: 2rem;
 }
 
-.kanji-phrases-grid {
-  display: grid;
-  grid-template-columns: auto auto;
-  place-items: center;
+.kanji-phrases-table{
+  border-collapse: collapse;
+  width: 80vw;
+  min-width: 30rem;
 }
 
-.grid-header {
+.kanji-phrases-table-header{
   background-color: hsl(207, 96%, 35%);
-  height: 100%;
-  width: 100%;
-  padding: .25rem;
 }
 
-.grid-row {
-  border-bottom: 1px solid transparent;
-  height: 100%;
-  width: 100%;
-  padding: .5rem;
-  font-size: 1.25rem;
+.kanji-phrases-table-row{
+  border-bottom: 2px solid transparent;
 }
 
-.grid-row.transcriptions:hover {
-  border-bottom: 1px solid hsl(207, 96%, 35%);
+.kanji-phrases-table-row:hover{
+  border-bottom: 2px solid hsl(207, 96%, 35%);
 }
 
-.grid-row.transcriptions:hover+.grid-row {
-  border-bottom: 1px solid hsl(207, 96%, 35%);
+.kanji-phrases-table-row rt{
+  opacity: 0;
+}
+
+.kanji-phrases-table-row:hover rt{
+  opacity: 1;
+  transform: translateX(10px);
 }
 
 .transcriptions{
   cursor: pointer;
 }
 
+td{
+  padding: .4rem;
+  font-size: 1.3rem;
+}
+
 rt{
-  font-size: .75rem;
+  font-size: .65rem;
 }

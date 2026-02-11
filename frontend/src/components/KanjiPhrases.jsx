@@ -3,42 +3,44 @@ import './KanjiPhrases.css'
 
 export function KanjiPhrases({ phrases, copytoClipboard }) {
 
-  const convertToAnkiFormat = (htmlString) => {
-    if (!htmlString) return "";
+  const convertToAnkiFormat = (textString) => {
+    if (!textString) return "";
 
-    return htmlString
-      // 1. Remove tags <rp> e seu conteúdo (parênteses de fallback)
-      .replace(/<rp>.*?<\/rp>/g, '')
-      // 2. Regex aprimorado: captura o texto base e o furigana, 
-      // ignorando espaços extras ou outras tags internas.
-      .replace(/<ruby>\s*([\s\S]*?)\s*<rt>\s*([\s\S]*?)\s*<\/rt>\s*<\/ruby>/g, ' $1[$2]')
-      // 3. Limpeza final: remove espaços duplos e espaços antes de pontuação japonesa
-      .replace(/\s+/g, ' ')
-      .replace(/\s([。、！?？])/g, '$1')
-      .trim();
+    return textString.replace(/\[(.*?)\]/g, (match, content) => {
+    // content será algo como "一緒|いっ|しょ"
+    const parts = content.split('|');
+    
+    const kanji = parts[0]; // "一緒"
+    const reading = parts.slice(1).join(''); // "いっしょ" (junta todas as leituras)
+
+    // Retorna com o espaço na frente, exigido pelo Anki
+    return ` ${kanji}[${reading}]`;
+  }).trim().replace(/\s+/g, ' ');
   };
 
   if (phrases) {
     console.log(phrases)
     return (
       <div className='kanji-phrases'>
-        <div className='kanji-phrases-grid'>
-          <p className='grid-header'>Phrase</p>
-          <p className='grid-header'>Translations</p>
+        <table className='kanji-phrases-table'>
+          <tr className='kanji-phrases-table-header'>
+            <th>Phrase</th>
+            <th>Translations</th>
+          </tr>
           {phrases.data.map((phrase) => {
             if (phrase.transcriptions[0]?.text && phrase.translations[0]?.text) {
               return (
-                <Fragment key={phrase.id}>
-                  <div onClick={() => {
-                    copytoClipboard(convertToAnkiFormat(phrase.transcriptions[0].html))
-                  }} className='grid-row transcriptions' dangerouslySetInnerHTML={{ __html: phrase.transcriptions[0].html }} />
-                  {/* <div className='grid-row transcriptions'>{phrase.transcriptions[0].html}</div> */}
-                  <div className='grid-row translations'>{phrase.translations[0].text}</div>
-                </ Fragment>
+                <tr className='kanji-phrases-table-row' key={phrase.id}>
+                  <td className='transcriptions' onClick={() => {
+                    copytoClipboard(convertToAnkiFormat(phrase.transcriptions[0].text))
+                  }} dangerouslySetInnerHTML={{ __html: phrase.transcriptions[0].html }} />
+                  {/* <div className='grid-row transcriptions'>{phrase.transcriptions[0].text}</div> */}
+                  <td>{phrase.translations[0].text}</td>
+                </tr>
               )
             }
           })}
-        </div>
+        </table>
       </div>
     )
   }
