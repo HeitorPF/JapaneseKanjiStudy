@@ -22,6 +22,10 @@ app.use(cors({
 
 const jisho = new JishoAPI();
 
+app.get('/api/ping', (req, res) => {
+    res.status(200).json({ status: 'ativo' });
+});
+
 app.get('/api/kanji/:character/vocab', async (req, res) => { //KanjiAliveAPI
     const kanji = req.params.character;
     
