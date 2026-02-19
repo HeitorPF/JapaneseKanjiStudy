@@ -6,9 +6,9 @@ const JishoAPI = require('unofficial-jisho-api');
 const fs = require('fs');
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
-const dominiosPermitidos = ['http://localhost:5173', 'https://SEU-SITE-AQUI.vercel.app'];
+const dominiosPermitidos = ['http://localhost:5173', 'https://kanji-dic.vercel.app'];
 
 app.use(cors({
     origin: function (origin, callback) {
