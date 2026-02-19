@@ -34,7 +34,7 @@ function App() {
     getDecks()
   }, [])
 
-    async function ankiConnect(action, version, params = {}) {
+  async function ankiConnect(action, version, params = {}) {
     try {
       const response = await axios.post('http://127.0.0.1:8765', {
         action,
@@ -144,11 +144,13 @@ function App() {
             )
         }
       </div>
-      <AnkiConnect 
+      <AnkiConnect
         decksAnki={decksAnki}
         ankiConnect={ankiConnect}
         setDecksAnki={setDecksAnki}
       />
+
+      <Analytics />
     </>
   )
 }
