@@ -32,6 +32,7 @@ export function KanjiPhrases({ phrases, copytoClipboard }) {
   };
 
   if (phrases) {
+    console.log(phrases)
     return (
       <div className='kanji-phrases'>
         <table className='kanji-phrases-table'>

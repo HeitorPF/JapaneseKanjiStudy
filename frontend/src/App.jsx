@@ -22,6 +22,8 @@ function App() {
 
   const [decksAnki, setDecksAnki] = useState(null)
 
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
 
   useEffect(() => {
     const getDecks = async () => {
@@ -60,7 +62,7 @@ function App() {
 
   async function searchKanjiInfo(kanji) {
     if (kanji !== kanjiInfo?.query) {
-      const response = await axios.get(`http://localhost:3001/api/kanji/${kanji}/info`)
+      const response = await axios.get(`${API_BASE_URL}/api/kanji/${kanji}/info`)
       setKanjiInfo(response.data)
     }
 
@@ -68,7 +70,7 @@ function App() {
 
   async function searchKanjiVocab(kanji) {
     if (kanji !== kanjiVocab?.query) {
-      const response = await axios.get(`http://localhost:3001/api/kanji/${kanji}/vocab`)
+      const response = await axios.get(`${API_BASE_URL}/api/kanji/${kanji}/vocab`)
       setKanjiVocab(response.data)
     }
 
@@ -76,7 +78,7 @@ function App() {
 
   async function searchKanjiPhrases(kanji) {
     if (kanji !== kanjiPhrases?.query) {
-      const response = await axios.get(`http://localhost:3001/api/kanji/${kanji}/phrases`)
+      const response = await axios.get(`${API_BASE_URL}/api/kanji/${kanji}/phrases`)
       setKanjiPhrases(response.data)
     }
   }
