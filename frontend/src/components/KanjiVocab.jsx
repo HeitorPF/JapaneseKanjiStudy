@@ -1,7 +1,7 @@
 import './KanjiVocab.css'
 
 export function KanjiVocab({ vocab }) {
-  if (vocab) {
+  if (vocab.data) {
     return (
       <div className='kanji-vocab'>
         <ul className='kanji-vocab-list'>
@@ -14,6 +14,13 @@ export function KanjiVocab({ vocab }) {
             )
           })}
         </ul>
+      </div>
+    )
+  }
+  else{
+    return(
+      <div>
+        No vocabulary data found
       </div>
     )
   }

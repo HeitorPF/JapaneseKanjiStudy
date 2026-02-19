@@ -68,3 +68,6 @@ Nota: O backend deve estar rodando na porta 3001 para que o frontend consiga con
 
 ## 💡 Por que este projeto?
 O diferencial do Kanji Dic é a conveniência. Em vez de abrir três abas diferentes para estudar um único Kanji, este app aglutina a anatomia do caractere, palavras compostas e frases reais. Isso torna o processo de criação de cards para o Anki muito mais rápido.
+
+
+Para se conectar com o anki, é necessário ter [AnkiConnect](https://ankiweb.net/shared/info/2055492159) como extensão no anki. Ir em "Ferramentas" - "Extensões" - selecionar AnkiConnect - "Configurar" e em "webCorsOriginList" adicionar "http://localhost:5173"

@@ -3,7 +3,7 @@ import './KanjiPhrases.css'
 
 export function KanjiPhrases({ phrases, copytoClipboard }) {
 
-  function convertToHTML(textString){
+  function convertToHTML(textString) {
     return textString.replace(/\[(.*?)\]/g, (match, content) => {
       // content será algo como "一緒|いっ|しょ"
       const parts = content.split('|');
@@ -16,7 +16,7 @@ export function KanjiPhrases({ phrases, copytoClipboard }) {
     }).trim().replace(/\s+/g, ' ');
   }
 
-  function convertToAnkiFormat(textString){
+  function convertToAnkiFormat(textString) {
     if (!textString) return "";
 
     return textString.replace(/\[(.*?)\]/g, (match, content) => {
@@ -32,27 +32,32 @@ export function KanjiPhrases({ phrases, copytoClipboard }) {
   };
 
   if (phrases) {
-    console.log(phrases)
     return (
       <div className='kanji-phrases'>
         <table className='kanji-phrases-table'>
-          <tr className='kanji-phrases-table-header'>
-            <th>Phrase</th>
-            <th>Translations</th>
-          </tr>
-          {phrases.data.map((phrase) => {
-            if (phrase.transcriptions[0]?.text && phrase.translations[0]?.text) {
-              return (
-                <tr className='kanji-phrases-table-row' key={phrase.id}>
-                  <td className='transcriptions' onClick={() => {
-                    copytoClipboard(convertToAnkiFormat(phrase.transcriptions[0].text))
-                  }} dangerouslySetInnerHTML={{ __html: convertToHTML(phrase.transcriptions[0].text) }} />
-                  {/* <div className='grid-row transcriptions'>{phrase.transcriptions[0].text}</div> */}
-                  <td>{phrase.translations[0].text}</td>
-                </tr>
-              )
-            }
-          })}
+          <thead>
+            <tr className='kanji-phrases-table-header'>
+              <th>Phrase</th>
+              <th>Translations</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {phrases.data.map((phrase) => {
+              if (phrase.transcriptions[0]?.text && phrase.translations[0]?.text) {
+                return (
+                  <tr className='kanji-phrases-table-row' key={phrase.id}>
+                    <td className='transcriptions' onClick={() => {
+                      copytoClipboard(convertToAnkiFormat(phrase.transcriptions[0].text))
+                    }} dangerouslySetInnerHTML={{ __html: convertToHTML(phrase.transcriptions[0].text) }} />
+                    {/* <div className='grid-row transcriptions'>{phrase.transcriptions[0].text}</div> */}
+                    <td>{phrase.translations[0].text}</td>
+                  </tr>
+                )
+              }
+            })}
+          </tbody>
+
         </table>
       </div>
     )

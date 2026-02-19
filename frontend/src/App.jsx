@@ -1,16 +1,17 @@
 import axios from 'axios'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { KanjiInput } from './components/KanjiInput'
 import { KanjiInfo } from './components/KanjiInfo'
 import { KanjiVocab } from './components/KanjiVocab'
 import { KanjiLists } from './components/KanjiLists'
 import { LoadingSpinner } from './components/LoadingSpinner'
 import { KanjiPhrases } from './components/KanjiPhrases'
+import { AnkiConnect } from './components/AnkiConnect'
 import './App.css'
 
 function App() {
   const [kanjiInfo, setKanjiInfo] = useState(null)
-  const [kanjiVocab, setKanjiVocab] = useState(null)
+  const [kanjiVocab, setKanjiVocab] = useState('')
   const [kanjiPhrases, setKanjiPhrases] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [kanjiInput, setKanjiInput] = useState('')
@@ -19,13 +20,48 @@ function App() {
   const [searchVocab, setSearchVocab] = useState(true)
   const [searchPhrases, setSearchPhrases] = useState(true)
 
+  const [decksAnki, setDecksAnki] = useState(null)
+
+
+  useEffect(() => {
+    const getDecks = async () => {
+      const result = await ankiConnect('deckNames', 5)
+      setDecksAnki(result)
+    }
+
+    getDecks()
+  }, [])
+
+    async function ankiConnect(action, version, params = {}) {
+    try {
+      const response = await axios.post('http://127.0.0.1:8765', {
+        action,
+        version,
+        params
+      });
+      const data = response.data;
+
+      if (data.error) {
+        throw data.error;
+      }
+
+      if (data.result) {
+        return data.result;
+      } else {
+        throw new Error('failed to get results from AnkiConnect');
+      }
+    } catch (e) {
+      if (e.isAxiosError) {
+        throw new Error('failed to connect to AnkiConnect');
+      }
+      throw e;
+    }
+  }
+
   async function searchKanjiInfo(kanji) {
     if (kanji !== kanjiInfo?.query) {
       const response = await axios.get(`http://localhost:3001/api/kanji/${kanji}/info`)
-      setKanjiInfo({
-        data: response.data,
-        query: kanji
-      })
+      setKanjiInfo(response.data)
     }
 
   }
@@ -33,10 +69,7 @@ function App() {
   async function searchKanjiVocab(kanji) {
     if (kanji !== kanjiVocab?.query) {
       const response = await axios.get(`http://localhost:3001/api/kanji/${kanji}/vocab`)
-      setKanjiVocab({
-        data: response.data,
-        query: kanji
-      })
+      setKanjiVocab(response.data)
     }
 
   }
@@ -44,10 +77,7 @@ function App() {
   async function searchKanjiPhrases(kanji) {
     if (kanji !== kanjiPhrases?.query) {
       const response = await axios.get(`http://localhost:3001/api/kanji/${kanji}/phrases`)
-      setKanjiPhrases({
-        data: response.data,
-        query: kanji
-      })
+      setKanjiPhrases(response.data)
     }
   }
 
@@ -63,7 +93,6 @@ function App() {
   async function copytoClipboard(text) {
     try {
       await navigator.clipboard.writeText(text);
-      alert('Texto copiado para a área de transferência');
     }
     catch (err) {
       console.log('Falha ao copiar texto:', err)
@@ -113,6 +142,11 @@ function App() {
             )
         }
       </div>
+      <AnkiConnect 
+        decksAnki={decksAnki}
+        ankiConnect={ankiConnect}
+        setDecksAnki={setDecksAnki}
+      />
     </>
   )
 }
